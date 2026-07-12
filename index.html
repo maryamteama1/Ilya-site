@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ilya - Fashion Brand</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- ألوان وتنسيقات الموقع (CSS) --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #fcfbf7;
+            color: #2b2b2b;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* شريط التنقل العلوي */
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 0;
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            background: #2b2b2b;
+            color: #fff;
+            padding: 5px 20px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: 600;
+            font-size: 15px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #c5a880;
+        }
+
+        .user-icon {
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* الواجهة الرئيسية (البانر) */
+        .hero {
+            background-color: #2b2b2b;
+            color: #ffffff;
+            text-align: center;
+            padding: 180px 20px 100px;
+        }
+
+        .hero h1 {
+            font-size: 50px;
+            font-family: 'Georgia', serif;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            color: #fcfbf7;
+        }
+
+        .hero p {
+            font-size: 19px;
+            color: #dcdcdc;
+            margin-bottom: 35px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-gold {
+            display: inline-block;
+            background-color: #c5a880;
+            color: #fff;
+            padding: 12px 40px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-gold:hover {
+            background-color: #b0926a;
+        }
+
+        /* العناوين الرئيسية للأقسام */
+        .section-title {
+            text-align: center;
+            margin: 70px 0 10px;
+            font-size: 32px;
+            color: #2b2b2b;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #777;
+            margin-bottom: 45px;
+            font-size: 16px;
+        }
+
+        /* قسم اختيار الفئة */
+        .categories-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
+        .category-card {
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 30px;
+            width: 250px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .category-card.active {
+            border-color: #c5a880;
+            background-color: #fffdf9;
+        }
+
+        .category-card .check-mark {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #c5a880;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: none;
+            font-size: 12px;
+            line-height: 20px;
+        }
+
+        .category-card.active .check-mark {
+            display: block;
+        }
+
+        .category-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: #c5a880;
+        }
+
+        /* قسم المنتجات المتبدل */
+        .products-grid {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            width: 300px;
+            overflow: hidden;
+            border: 1px solid #eee;
+            position: relative;
+            display: none; /* يتم التحكم بالظهور بالـ JavaScript */
+        }
+
+        .product-image {
+            height: 320px;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #fff;
+            position: relative;
+        }
+
+        .badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #c5a880;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        .product-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .product-title {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #2b2b2b;
+        }
+
+        .product-desc {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 15px;
+        }
+
+        .product-price-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #f5f5f5;
+            padding-top: 15px;
+        }
+
+        .price-current {
+            font-weight: bold;
+            color: #2b2b2b;
+            font-size: 18px;
+        }
+
+        .price-old {
+            text-decoration: line-through;
+            color: #b5b5b5;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+
+        .btn-cart {
+            background: #2b2b2b;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .btn-cart:hover {
+            background: #c5a880;
+        }
+
+        /* قسم التصاميم الخاصة للملابس */
+        .custom-section {
+            background: #ffffff;
+            padding: 60px 0;
+            margin-top: 60px;
+            border-top: 1px solid #eee;
+        }
+
+        .custom-wrapper {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .custom-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .custom-text h2 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .alert-box {
+            background-color: #fff9e6;
+            border-right: 4px solid #ffcc00;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .features-list li {
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .features-list li::before {
+            content: "✓ ";
+            color: #c5a880;
+            font-weight: bold;
+        }
+
+        .custom-image-box {
+            flex: 1;
+            min-width: 300px;
+            background: #2b2b2b;
+            color: white;
+            height: 400px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* استمارة الطلب وحساب الأسعار التلقائي */
+        .order-section {
+            padding: 60px 0;
+            background: #fdfdfd;
+        }
+
+        .order-form-box {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.05);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            background: #fafafa;
+        }
+
+        /* صندوق رفع الصور بالتصميم الخاص */
+        .upload-box {
+            border: 2px dashed #c5a880;
+            padding: 30px;
+            text-align: center;
+            border-radius: 8px;
+            background: #fffdf9;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* ملخص السعر والعربون */
+        .price-summary-box {
+            background: #f7f7f7;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .summary-row.total {
+            font-weight: bold;
+            font-size: 20px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+            color: #2b2b2b;
+        }
+
+        /* صندوق حساب العربون التلقائي (ربع المبلغ الأصلي) */
+        .deposit-box {
+            background: #fff2f2;
+            border: 1px solid #ffcccc;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+            display: none; /* يظهر بالـ JS فقط عند اختيار طلب مخصص */
+        }
+
+        .deposit-amount {
+            font-size: 32px;
+            font-weight: bold;
+            color: #d9534f;
+            margin: 10px 0;
+        }
+
+        .payment-method-box {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: right;
+            font-size: 14px;
+        }
+
+        .footer {
+            background: #2b2b2b;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 60px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">إيليا ستور</div>
+            <ul class="nav-links">
+                <li><a href="#">الرئيسية</a></li>
+                <li><a href="#categories">الأقسام</a></li>
+                <li><a href="#products">المنتجات</a></li>
+                <li><a href="#custom">طلب خاص</a></li>
+                <li><a href="#order">اطلب الآن</a></li>
+                <li><a href="#">تواصل معنا</a></li>
+            </ul>
+            <div class="user-icon">👤</div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <h1>ilya Brand</h1>
+            <p>ملابس عصرية بتصاميم فريدة تناسب أسلوب حياتك. اختار من تشكيلتنا المميزة أو صمم قطعتك الخاصة بنفسك!</p>
+            <a href="#order" class="btn-gold">اكتشف مجموعتنا الآن</a>
+        </div>
+    </header>
+
+    <section id="categories" class="container">
+        <h2 class="section-title">اختار القسم</h2>
+        <p class="section-subtitle">اختار القسم المناسب ليك عشان تظهرلك المنتجات المتاحة</p>
+        
+        <div class="categories-grid">
+            <div class="category-card active" onclick="switchCategory('men', this)">
+                <span class="check-mark">✓</span>
+                <div class="category-icon">🧍‍♂️</div>
+                <h3>رجالي</h3>
+                <p style="font-size: 12px; color: #777;">تشكيلة كاجوال عصرية وألوان رجالية مريحة</p>
+            </div>
+            <div class="category-card" onclick="switchCategory('women', this)">
+                <span class="check-mark">✓</span>
+                <div class="category-icon">🧍‍♀️</div>
+                <h3>حريمي</h3>
+                <p style="font-size: 12px; color: #777;">أرقى الموديلات والتصاميم النسائية الأنيقة</p>
+            </div>
+            <div class="category-card" onclick="switchCategory('sports', this)">
+                <span class="check-mark">✓</span>
+                <div class="category-icon">🏃‍♂️</div>
+                <h3>ملابس رياضية</h3>
+                <p style="font-size: 12px; color: #777;">مجموعة رياضية مرنة ومناسبة للتمارين والأنشطة</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="products" class="container">
+        <h2 class="section-title">أحدث صيحات الموضة معنا</h2>
+        <p class="section-subtitle">منتجات ذات خامات ممتازة وضمان جودة</p>
+        
+        <div class="products-grid">
+            <div class="product-card men-prod" style="display: block;">
+                <div class="product-image" style="background-color: #4a5568;">منتج رجالي مميز <span class="badge">الأكثر مبيعاً</span></div>
+                <div class="product-info">
+                    <h3 class="product-title">منتج كاجوال رجالي</h3>
+                    <p class="product-desc">خامة ناعمة وممتازة مناسبة للاستخدام اليومي</p>
+                    <div class="product-price-box">
+                        <div>
+                            <span class="price-current">350 جنيه</span>
+                            <span class="price-old">450 جنيه</span>
+                        </div>
+                        <button class="btn-cart">🛒</button>
+                    </div>
+                </div>
+            </div>
+            <div class="product-card men-prod" style="display: block;">
+                <div class="product-image" style="background-color: #718096;">منتج رجالي كلاسيك <span class="badge">خصم</span></div>
+                <div class="product-info">
+                    <h3 class="product-title">منتج كلاسيك رجالي</h3>
+                    <p class="product-desc">عملي ومريح جداً ومناسب لجميع الأوقات</p>
+                    <div class="product-price-box">
+                        <div>
+                            <span class="price-current">380 جنيه</span>
+                            <span class="price-old">460 جنيه</span>
+                        </div>
+                        <button class="btn-cart">🛒</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card women-prod">
+                <div class="product-image" style="background-color: #e2e8f0; color:#333;">منتج حريمي أنيق <span class="badge">جديد</span></div>
+                <div class="product-info">
+                    <h3 class="product-title">منتج عصري حريمي</h3>
+                    <p class="product-desc">تصميم ناعم ومريح بألوان صيفية مبهجة</p>
+                    <div class="product-price-box">
+                        <div>
+                            <span class="price-current">420 جنيه</span>
+                        </div>
+                        <button class="btn-cart">🛒</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card sports-prod">
+                <div class="product-image" style="background-color: #1a202c;">ترينج رياضي أسود <span class="badge">مميز</span></div>
+                <div class="product-info">
+                    <h3 class="product-title">ترينج رياضي متكامل</h3>
+                    <p class="product-desc">خامات مخصصة لامتصاص العرق وسهولة الحركة</p>
+                    <div class="product-price-box">
+                        <div>
+                            <span class="price-current">590 جنيه</span>
+                            <span class="price-old">700 جنيه</span>
+                        </div>
+                        <button class="btn-cart">🛒</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="custom" class="custom-section">
+        <div class="container custom-wrapper">
+            <div class="custom-text">
+                <h2>خصص ملابسك باختيارك الخاص</h2>
+                <p>هل عندك فكرة لتطريز معين أو لوجو أو رسمة حابب تطبعها على لبسك؟ مفيش مشكلة! تقدر ترفع التصميم اللي يعجبك وبننفذهولك بدقة متناهية على خامات قطنية 100%.</p>
+                <div class="alert-box">
+                    💡 طلبات التخصيص أو الطباعة المخصصة تتطلب سداد عربون حجز لتأكيد الجدية والبدء بالتنفيذ.
+                </div>
+                <ul class="features-list">
+                    <li>جودة طباعة وتطريز فاخرة جداً</li>
+                    <li>خامات قطنية ممتازة ومعالجة</li>
+                    <li>ألوان زاهية ومستقرة تماماً مع الغسيل</li>
+                    <li>شحن سريع وتوصيل آمن للمنزل</li>
+                </ul>
+                <a href="#order" class="btn-gold">اطلب قطعتك المخصصة</a>
+            </div>
+            <div class="custom-image-box">
+                <div style="font-size: 50px; margin-bottom: 20px;">👚</div>
+                <h3>اختار الاستايل والطباعة على مزاجك</h3>
+                <p style="font-size: 14px; opacity: 0.8; margin-top: 10px;">صمم مظهرك الفريد الآن!</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="order" class="order-section">
+        <div class="container">
+            <h2 class="section-title">اطلب الآن</h2>
+            <p class="section-subtitle">امليء البيانات ونتواصل معاك لتأكيد الطلب وشحن المنتج</p>
+            
+            <div class="order-form-box">
+                <form id="clothingForm">
+                    <div class="form-group">
+                        <label>القسم الرئيسي *</label>
+                        <select id="formCategory" onchange="updateFormProducts()">
+                            <option value="men">رجالي</option>
+                            <option value="women">حريمي</option>
+                            <option value="sports">ملابس رياضية</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>اختر المنتج *</label>
+                        <select id="formProduct" onchange="calculateTotal()">
+                            </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>المقاس *</label>
+                        <select id="formSize">
+                            <option value="S">S - صغير</option>
+                            <option value="M">M - متوسط</option>
+                            <option value="L">L - كبير</option>
+                            <option value="XL">XL - كبير جداً</option>
+                            <option value="XXL">XXL - مقاس خاص</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>نوع التصميم *</label>
+                        <select id="printType" onchange="calculateTotal()">
+                            <option value="normal">تصميم جاهز من المتجر (بدون رسوم إضافية)</option>
+                            <option value="custom">طلب تفصيل/طباعة خاصة لوجو مخصص</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="uploadContainer" style="display:none;">
+                        <label>ارفع صورة اللوجو أو التصميم المطلوب</label>
+                        <div class="upload-box">
+                            <div>📁 اضغط هنا لرفع صورة التصميم الخاص بكِ (PNG, JPG)</div>
+                            <input type="file" accept="image/*" style="display:none;" id="fileInput">
+                        </div>
+                    </div>
+
+                    <div class="price-summary-box">
+                        <h3>📋 ملخص السعر:</h3>
+                        <div class="summary-row" style="margin-top:15px;">
+                            <span>سعر المنتج الأساسي:</span>
+                            <span id="basePriceText">350 جنيه</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>الإجمالي:</span>
+                            <span id="totalPriceText">350 جنيه</span>
+                        </div>
+                    </div>
+
+                    <div class="deposit-box" id="depositBoxContainer">
+                        <h3>💸 دفع ديبرزيت (عربون)</h3>
+                        <p>لطلبات التصميم والطباعة الخاصة مطلوب تحويل 25% من قيمة المنتج لتأكيد الطلب وبدء التنفيذ</p>
+                        <div class="deposit-amount" id="depositAmountText">0 جنيه</div>
+                        <p style="font-size:13px; color:#555;">(= ربع سعر المنتج الأصلي)</p>
+                        
+                        <div class="payment-method-box">
+                            <strong>رقم فودافون كاش للمبيعات:</strong> <span style="color:#d9534f; font-weight:bold;">01027954460</span>
+                            <p style="margin-top:5px; font-size:12px; color:#777;">✓ يرجى تحويل العربون للرقم بالأعلى ورفع صورة التحويل لتأكيد الحجز الفوري.</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>الاسم الكامل *</label>
+                        <input type="text" id="custName" placeholder="اكتب الاسم الثلاثي" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>رقم التليفون الأول *</label>
+                        <input type="tel" id="custPhone" placeholder="01xxxxxxxxx" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>العنوان بالتفصيل *</label>
+                        <textarea id="custAddress" placeholder="المحافظة - المدينة - الشارع - تفاصيل المبنى" rows="3" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-gold" style="width:100%; border-radius:8px; font-size:18px;">إرسال الطلب للمبيعات</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>جميع الحقوق محفوظة © 2026 | Ilya Fashion Brand Store</p>
+    </footer>
+
+    <script>
+        const productsData = {
+            men: [
+                { name: "منتج كاجوال رجالي", price: 350 },
+                { name: "منتج كلاسيك رجالي", price: 380 }
+            ],
+            women: [
+                { name: "منتج عصري حريمي", price: 420 }
+            ],
+            sports: [
+                { name: "ترينج رياضي متكامل", price: 590 }
+            ]
+        };
+
+        function switchCategory(category, element) {
+            document.querySelectorAll('.category-card').forEach(card => card.classList.remove('active'));
+            element.classList.add('active');
+
+            document.querySelectorAll('.product-card').forEach(prod => prod.style.display = 'none');
+
+            if(category === 'men') {
+                document.querySelectorAll('.men-prod').forEach(prod => prod.style.display = 'block');
+            } else if(category === 'women') {
+                document.querySelectorAll('.women-prod').forEach(prod => prod.style.display = 'block');
+            } else if(category === 'sports') {
+                document.querySelectorAll('.sports-prod').forEach(prod => prod.style.display = 'block');
+            }
+
+            document.getElementById('formCategory').value = category;
+            updateFormProducts();
+        }
+
+        function updateFormProducts() {
+            const category = document.getElementById('formCategory').value;
+            const productSelect = document.getElementById('formProduct');
+            
+            productSelect.innerHTML = "";
+
+            productsData[category].forEach(prod => {
+                let opt = document.createElement('option');
+                opt.value = prod.price;
+                opt.textContent = `${prod.name} - ${prod.price} جنيه`;
+                productSelect.appendChild(opt);
+            });
+
+            calculateTotal();
+        }
+
+        let globalDeposit = 0;
+
+        function calculateTotal() {
+            const productSelect = document.getElementById('formProduct');
+            const printType = document.getElementById('printType').value;
+            const uploadContainer = document.getElementById('uploadContainer');
+            const depositBoxContainer = document.getElementById('depositBoxContainer');
+
+            if(!productSelect.value) return;
+
+            let basePrice = parseInt(productSelect.value);
+
+            if(printType === 'custom') {
+                uploadContainer.style.display = "block";
+                depositBoxContainer.style.display = "block"; 
+            } else {
+                uploadContainer.style.display = "none";
+                depositBoxContainer.style.display = "none"; 
+            }
+
+            let total = basePrice;
+            globalDeposit = Math.round(basePrice * 0.25);
+
+            document.getElementById('basePriceText').textContent = basePrice + " جنيه";
+            document.getElementById('totalPriceText').textContent = total + " جنيه";
+            document.getElementById('depositAmountText').textContent = globalDeposit + " جنيه";
+        }
+
+        window.onload = function() {
+            updateFormProducts();
+        };
+
+        document.querySelector('.upload-box').addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+        document.getElementById('fileInput').addEventListener('change', function() {
+            if(this.files.length > 0) {
+                document.querySelector('.upload-box').textContent = "✓ تم رفع التصميم: " + this.files[0].name;
+            }
+        });
+
+        // ربط إرسال النموذج بفتح الواتساب مع رقمك وإدخال البيانات تلقائياً
+        document.getElementById('clothingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const categoryText = document.getElementById('formCategory').options[document.getElementById('formCategory').selectedIndex].text;
+            const productText = document.getElementById('formProduct').options[document.getElementById('formProduct').selectedIndex].text;
+            const sizeText = document.getElementById('formSize').options[document.getElementById('formSize').selectedIndex].text;
+            const printTypeText = document.getElementById('printType').options[document.getElementById('printType').selectedIndex].text;
+            
+            const custName = document.getElementById('custName').value;
+            const custPhone = document.getElementById('custPhone').value;
+            const custAddress = document.getElementById('custAddress').value;
+            const totalPrice = document.getElementById('totalPriceText').textContent;
+
+            // بناء نص رسالة الواتساب المنسقة للعميل
+            let message = `🚨 *طلب شراء جديد من متجر إيليا* 🚨\n\n`;
+            message += `👤 *بيانات العميل:*\n`;
+            message += `• الاسم: ${custName}\n`;
+            message += `• رقم الموبايل: ${custPhone}\n`;
+            message += `• العنوان بالتفصيل: ${custAddress}\n\n`;
+            message += `📦 *تفاصيل الطلب:*\n`;
+            message += `• القسم: ${categoryText}\n`;
+            message += `• المنتج: ${productText}\n`;
+            message += `• المقاس: ${sizeText}\n`;
+            message += `• نوع التصميم: ${printTypeText}\n\n`;
+            message += `💰 *الحساب الاجمالي:* ${totalPrice}\n`;
+            
+            if(document.getElementById('printType').value === 'custom') {
+                message += `⚠️ *العربون المطلوب (25%):* ${globalDeposit} جنيه\n`;
+                message += `_(برجاء إرفاق صورة تحويل فودافون كاش في المحادثة)_\n`;
+            }
+
+            // رقم الواتساب الخاص بكِ مضاف له كود الدولة ومحذوف الصفر الأول
+            const whatsappNumber = "201027954460";
+            const encodedMessage = encodeURIComponent(message);
+            
+            // فتح اللينك مباشرة للواتساب
+            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+            window.open(whatsappURL, '_blank');
+        });
+    </script>
+</body>
+</html>
