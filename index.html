@@ -171,15 +171,74 @@
             position: relative;
             display: none;
         }
-        .product-image {
+        /* تعديل ستايل معرض الصور داخل الكارد */
+        .product-image-container {
             height: 320px;
-            background-color: #4a5568;
+            position: relative;
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+        .product-slides {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.4s ease-in-out;
+        }
+        .product-slides img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        /* أزرار التنقل بين الصور */
+        .slide-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            color: #fff;
-            position: relative;
+            z-index: 10;
+            transition: background 0.3s;
+        }
+        .slide-btn:hover {
+            background: rgba(255, 255, 255, 1);
+        }
+        .slide-btn.prev {
+            right: 10px;
+        }
+        .slide-btn.next {
+            left: 10px;
+        }
+        /* النقاط السفلية لمؤشر الصور */
+        .slide-dots {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+            z-index: 10;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .dot.active {
+            background: #c5a880;
+            width: 12px;
+            border-radius: 4px;
         }
         .badge {
             position: absolute;
@@ -190,6 +249,7 @@
             padding: 3px 10px;
             border-radius: 5px;
             font-size: 12px;
+            z-index: 12;
         }
         .product-info {
             padding: 20px;
@@ -443,10 +503,24 @@
         <p class="section-subtitle">منتجات ذات خامات ممتازة وضمان جودة</p>
          
         <div class="products-grid">
-            <div class="product-card men-prod" style="display: block;">
-                <div class="product-image">منتج رجالي مميز <span class="badge">الأكثر مبيعاً</span></div>
+            
+            <!-- منتج رجالي 1 -->
+            <div class="product-card men-prod" style="display: block;" id="men-product-1">
+                <div class="product-image-container">
+                    <span class="badge">الأكثر مبيعاً</span>
+                    <button class="slide-btn prev" onclick="moveSlide('men-product-1', -1)">&#10095;</button>
+                    <div class="product-slides">
+                        <img src="products/product1_1.jpg" alt="صورة المنتج 1">
+                        <img src="products/product1_2.jpg" alt="صورة المنتج 2">
+                    </div>
+                    <button class="slide-btn next" onclick="moveSlide('men-product-1', 1)">&#10094;</button>
+                    <div class="slide-dots">
+                        <span class="dot active" onclick="currentSlide('men-product-1', 0)"></span>
+                        <span class="dot" onclick="currentSlide('men-product-1', 1)"></span>
+                    </div>
+                </div>
                 <div class="product-info">
-                    <h3 class="product-title">منتج كاجوال رجالي</h3>
+                    <h3 class="product-title">تيشرت كاجوال رجالي</h3>
                     <p class="product-desc">خامة ناعمة وممتازة مناسبة للاستخدام اليومي</p>
                     <div class="product-price-box">
                         <div>
@@ -457,10 +531,26 @@
                     </div>
                 </div>
             </div>
-            <div class="product-card men-prod" style="display: block;">
-                <div class="product-image" style="background-color: #718096;">منتج رجالي كلاسيك <span class="badge">خصم</span></div>
+
+            <!-- منتج رجالي 2 -->
+            <div class="product-card men-prod" style="display: block;" id="men-product-2">
+                <div class="product-image-container">
+                    <span class="badge">خصم</span>
+                    <button class="slide-btn prev" onclick="moveSlide('men-product-2', -1)">&#10095;</button>
+                    <div class="product-slides">
+                        <img src="products/product2_1.jpg" alt="صورة المنتج 1">
+                        <img src="products/product2_2.jpg" alt="صورة المنتج 2">
+                        <img src="products/product2_3.jpg" alt="صورة المنتج 3">
+                    </div>
+                    <button class="slide-btn next" onclick="moveSlide('men-product-2', 1)">&#10094;</button>
+                    <div class="slide-dots">
+                        <span class="dot active" onclick="currentSlide('men-product-2', 0)"></span>
+                        <span class="dot" onclick="currentSlide('men-product-2', 1)"></span>
+                        <span class="dot" onclick="currentSlide('men-product-2', 2)"></span>
+                    </div>
+                </div>
                 <div class="product-info">
-                    <h3 class="product-title">منتج كلاسيك رجالي</h3>
+                    <h3 class="product-title">قميص كلاسيك شيك</h3>
                     <p class="product-desc">عملي ومريح جداً ومناسب لجميع الأوقات</p>
                     <div class="product-price-box">
                         <div>
@@ -472,8 +562,100 @@
                 </div>
             </div>
 
+            <!-- منتج رجالي 3 -->
+            <div class="product-card men-prod" style="display: block;" id="men-product-3">
+                <div class="product-image-container">
+                    <span class="badge">جديد</span>
+                    <button class="slide-btn prev" onclick="moveSlide('men-product-3', -1)">&#10095;</button>
+                    <div class="product-slides">
+                        <img src="products/product3_1.jpg" alt="صورة المنتج 1">
+                        <img src="products/product3_2.jpg" alt="صورة المنتج 2">
+                        <img src="products/product3_3.jpg" alt="صورة المنتج 3">
+                        <img src="products/product3_4.jpg" alt="صورة المنتج 4">
+                        <img src="products/product3_5.jpg" alt="صورة المنتج 5">
+                    </div>
+                    <button class="slide-btn next" onclick="moveSlide('men-product-3', 1)">&#10094;</button>
+                    <div class="slide-dots">
+                        <span class="dot active" onclick="currentSlide('men-product-3', 0)"></span>
+                        <span class="dot" onclick="currentSlide('men-product-3', 1)"></span>
+                        <span class="dot" onclick="currentSlide('men-product-3', 2)"></span>
+                        <span class="dot" onclick="currentSlide('men-product-3', 3)"></span>
+                        <span class="dot" onclick="currentSlide('men-product-3', 4)"></span>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">هودي شتوي مريح</h3>
+                    <p class="product-desc">ثقيل ومبطن بملمس رائع ومثالي للأجواء الباردة</p>
+                    <div class="product-price-box">
+                        <div>
+                            <span class="price-current">450 جنيه</span>
+                            <span class="price-old">520 جنيه</span>
+                        </div>
+                        <button class="btn-cart">🛒</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- منتج رجالي 4 -->
+            <div class="product-card men-prod" style="display: block;" id="men-product-4">
+                <div class="product-image-container">
+                    <span class="badge">مميز</span>
+                    <button class="slide-btn prev" onclick="moveSlide('men-product-4', -1)">&#10095;</button>
+                    <div class="product-slides">
+                        <img src="products/product4_1.jpg" alt="صورة المنتج 1">
+                    </div>
+                    <button class="slide-btn next" onclick="moveSlide('men-product-4', 1)">&#10094;</button>
+                    <div class="slide-dots">
+                        <span class="dot active" onclick="currentSlide('men-product-4', 0)"></span>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">بنطلون جينز عصري</h3>
+                    <p class="product-desc">جينز مريح ليكرا مطاطي يناسب حركتك اليومية</p>
+                    <div class="product-price-box">
+                        <div>
+                            <span class="price-current">420 جنيه</span>
+                            <span class="price-old">490 جنيه</span>
+                        </div>
+                        <button class="btn-cart">🛒</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- منتج رجالي 5 -->
+            <div class="product-card men-prod" style="display: block;" id="men-product-5">
+                <div class="product-image-container">
+                    <span class="badge">صيفي</span>
+                    <button class="slide-btn prev" onclick="moveSlide('men-product-5', -1)">&#10095;</button>
+                    <div class="product-slides">
+                        <img src="products/product5_1.jpg" alt="صورة المنتج 1">
+                        <img src="products/product5_2.jpg" alt="صورة المنتج 2">
+                    </div>
+                    <button class="slide-btn next" onclick="moveSlide('men-product-5', 1)">&#10094;</button>
+                    <div class="slide-dots">
+                        <span class="dot active" onclick="currentSlide('men-product-5', 0)"></span>
+                        <span class="dot" onclick="currentSlide('men-product-5', 1)"></span>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">شورت كاجوال خفيف</h3>
+                    <p class="product-desc">شورت خفيف مريح جداً للبحر والخروجات الصيفية السريعة</p>
+                    <div class="product-price-box">
+                        <div>
+                            <span class="price-current">250 جنيه</span>
+                            <span class="price-old">320 جنيه</span>
+                        </div>
+                        <button class="btn-cart">🛒</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- المنتجات الحريمي والرياضية الأصلية -->
             <div class="product-card women-prod">
-                <div class="product-image" style="background-color: #e2e8f0; color:#333;">منتج حريمي أنيق <span class="badge">جديد</span></div>
+                <div class="product-image-container">
+                    <img src="women1.jpg" alt="منتج حريمي أنيق" style="width:100%; height:100%; object-fit:cover;">
+                    <span class="badge">جديد</span>
+                </div>
                 <div class="product-info">
                     <h3 class="product-title">منتج عصري حريمي</h3>
                     <p class="product-desc">تصميم ناعم ومريح بألوان صيفية مبهجة</p>
@@ -487,7 +669,10 @@
             </div>
 
             <div class="product-card sports-prod">
-                <div class="product-image" style="background-color: #1a202c;">ترينج رياضي أسود <span class="badge">مميز</span></div>
+                <div class="product-image-container">
+                    <img src="sports1.jpg" alt="ترينج رياضي أسود" style="width:100%; height:100%; object-fit:cover;">
+                    <span class="badge">مميز</span>
+                </div>
                 <div class="product-info">
                     <h3 class="product-title">ترينج رياضي متكامل</h3>
                     <p class="product-desc">خامات مخصصة لامتصاص العرق وسهولة الحركة</p>
@@ -520,7 +705,6 @@
                 <a href="#order" class="btn-gold">اطلب قطعتك المخصصة</a>
             </div>
             <div class="custom-image-box">
-                <!-- تم استبدال الرابط القديم باسم الصورة الجديدة المرفوعة على GitHub -->
                 <img class="printer-img" src="printer.png" alt="Ilya Printing Machine">
                 <h3>اختار الاستايل والطباعة على مزاجك</h3>
                 <p style="font-size: 14px; opacity: 0.8; margin-top: 10px;">صمم مظهرك الفريد الآن!</p>
@@ -639,10 +823,14 @@
     </footer>
 
     <script>
+        // تحديث مصفوفة المنتجات لتشمل 5 منتجات رجالي ببياناتهم الصحيحة لتحديث الفورم التلقائي
         const productsData = {
             men: [
-                { name: "منتج كاجوال رجالي", price: 350 },
-                { name: "منتج كلاسيك رجالي", price: 380 }
+                { name: "تيشرت كاجوال رجالي", price: 350 },
+                { name: "قميص كلاسيك شيك", price: 380 },
+                { name: "هودي شتوي مريح", price: 450 },
+                { name: "بنطلون جينز عصري", price: 420 },
+                { name: "شورت كاجوال خفيف", price: 250 }
             ],
             women: [
                 { name: "منتج عصري حريمي", price: 420 }
@@ -651,6 +839,54 @@
                 { name: "ترينج رياضي متكامل", price: 590 }
             ]
         };
+
+        // تتبع مؤشر الصور الحالية لكل منتج
+        const sliderStates = {
+            'men-product-1': 0,
+            'men-product-2': 0,
+            'men-product-3': 0,
+            'men-product-4': 0,
+            'men-product-5': 0
+        };
+
+        function showSlide(cardId, slideIndex) {
+            const card = document.getElementById(cardId);
+            if (!card) return;
+            const slidesContainer = card.querySelector('.product-slides');
+            const totalSlides = slidesContainer.querySelectorAll('img').length;
+            const dots = card.querySelectorAll('.dot');
+
+            // تعديل مؤشر الـ slide ليكون في الحدود المتاحة
+            if (slideIndex >= totalSlides) {
+                sliderStates[cardId] = 0;
+            } else if (slideIndex < 0) {
+                sliderStates[cardId] = totalSlides - 1;
+            } else {
+                sliderStates[cardId] = slideIndex;
+            }
+
+            const activeIndex = sliderStates[cardId];
+            
+            // تحريك الصور (سلايد يمين ويسار)
+            slidesContainer.style.transform = `translateX(${activeIndex * 100}%)`;
+
+            // تحديث حالة النقاط النشطة (Dots)
+            dots.forEach((dot, idx) => {
+                if (idx === activeIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        function moveSlide(cardId, step) {
+            showSlide(cardId, sliderStates[cardId] + step);
+        }
+
+        function currentSlide(cardId, index) {
+            showSlide(cardId, index);
+        }
 
         function switchCategory(category, element) {
             document.querySelectorAll('.category-card').forEach(card => card.classList.remove('active'));
@@ -716,6 +952,10 @@
 
         window.onload = function() {
             updateFormProducts();
+            // تهيئة السلايدر لكل المنتجات الرجالية عند التحميل
+            Object.keys(sliderStates).forEach(cardId => {
+                showSlide(cardId, 0);
+            });
         };
 
         document.querySelector('.upload-box').addEventListener('click', function() {
